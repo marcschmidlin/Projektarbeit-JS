@@ -1,9 +1,4 @@
 $(document).ready(function() {
-    $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd', // Datumsformat
-        weekStart: 1, // Die Woche beginnt am Montag
-        calendarWeeks: true, // Zeige die Kalenderwochen
-    });
     // initiales Laden der Berufsgruppen
     $.ajax({
         url: "http://sandbox.gibm.ch/berufe.php",
@@ -76,13 +71,13 @@ $(document).ready(function() {
                 // Stundenplan-Daten in die Tabelle einfügen
                 $.each(stundenplanData, function(index, entry) {
                     var row = $("<tr></tr>").appendTo(tbody);
-                    row.append("<td>" + entry.datum + "</td>");
-                    row.append("<td>" + entry.wochentag + "</td>");
-                    row.append("<td>" + entry.von + "</td>");
-                    row.append("<td>" + entry.bis + "</td>");
-                    row.append("<td>" + entry.lehrer + "</td>");
-                    row.append("<td>" + entry.fach + "</td>");
-                    row.append("<td>" + entry.raum + "</td>");
+                    row.append("<td>" + entry.tafel_datum + "</td>");
+                    row.append("<td>" + entry.tafel_wochentag + "</td>");
+                    row.append("<td>" + entry.tafel_von + "</td>");
+                    row.append("<td>" + entry.tafel_bis + "</td>");
+                    row.append("<td>" + entry.tafel_lehrer + "</td>");
+                    row.append("<td>" + entry.tafel_fach + "</td>");
+                    row.append("<td>" + entry.tafel_raum + "</td>");
                 });
 
                 table.appendTo(stundenplanAnzeige);
