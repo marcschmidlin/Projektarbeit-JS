@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stundenplan BBZBL</title>
+
+    <!-- Einbindung des Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Einbindung des FullCalendar CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.css">
+
+    <!-- Stil für die Tabelle auf kleinen Bildschirmen -->
     <style>
-        /* Stil für die Tabelle auf kleinen Bildschirmen */
         @media (max-width: 767px) {
+            /* Anpassung der Schriftgröße auf kleinen Bildschirmen */
             table {
-                font-size: 12px; /* Kleinere Schriftgröße */
+                font-size: 12px;
             }
+
+            /* Anpassung der Zellabstände auf kleinen Bildschirmen */
             table th, table td {
-                padding: 0.25rem; /* Kleinere Zellabstände */
+                padding: 0.25rem;
             }
         }
     </style>
@@ -22,6 +30,7 @@
     <div class="container mt-5">
         <h1 class="mb-3">Stundenplan BBZBL</h1>
         <div class="row">
+            <!-- Auswahl der Berufsgruppe - 6 Spalten für mittlere und große Bildschirme -->
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="auswahlBerufsgruppe">Berufsgruppe</label>
@@ -29,6 +38,7 @@
                     </select>
                 </div>
             </div>
+            <!-- Auswahl der Klasse - 6 Spalten für mittlere und große Bildschirme -->
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="auswahlKlasse">Klasse</label>
@@ -37,16 +47,24 @@
                 </div>
             </div>
         </div>
+        <!-- Anzeige des Stundenplans  -->
         <div id="stundenplanAnzeige" class="mt-5">
+            <!-- Responsive Tabelle für die Anzeige des Stundenplans -->
             <div class="table-responsive">
                 <table class="table">
+                    <!-- Hier werden die Stundenplan-Daten eingefügt -->
                 </table>
             </div>
         </div>
     </div>
 
+    <!-- Einbindung von jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Einbindung des FullCalendar Scripts -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+
+    <!-- Einbindung des eigenen JavaScript-Codes -->
     <script src="script.js"></script>
 </body>
 </html>
