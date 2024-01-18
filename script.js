@@ -1,22 +1,23 @@
 $(document).ready(function() {
     $.ajax({
-        url: "https://gibm.becknet.ch/warenhaus/getFiliale.php?format=JSON",
+        url: "http://sandbox.gibm.ch/berufe.php",
         dataType: "json",
         success: function(data) {
             var dropdown = $("#auswahlBerufsgruppe");
-            $.each(data, function(index, filiale) {
-                var optionText = filiale.stadt + " - " + filiale.strasse;
-                dropdown.append($('<option></option>').attr('value', filiale.id).text(optionText));
+            $.each(data, function(index, beruf) {
+                var optionText = beruf.beruf_name;
+                dropdown.append($('<option></option>').attr('value', beruf.beruf_id).text(optionText));
             });
 
-            // Beim Laden der Seite überprüfen, ob eine ausgewählte Filiale im Local Storage vorhanden ist
-            var selectedFiliale = localStorage.getItem("selectedFiliale");
-            if (selectedFiliale) {
-                dropdown.val(selectedFiliale);
+            // Beim Laden der Seite überprüfen, ob eine ausgewählte Berufsgruppe im Local Storage vorhanden ist
+            var selectedBeruf = localStorage.getItem("selectedBeruf");
+            if (selectedBeruf) {
+                dropdown.val(selectedBeruf);
                 dropdown.trigger("change");
             }
         }
     });
+
 
     $("#auswahlBerufsgruppe").change(function() {
         var selectedOption = $(this).val();
