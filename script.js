@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    // initiales Laden der Berufsgruppen
     $.ajax({
         url: "http://sandbox.gibm.ch/berufe.php",
         dataType: "json",
@@ -9,7 +10,7 @@ $(document).ready(function() {
                 dropdown.append($('<option></option>').attr('value', beruf.beruf_id).text(optionText));
             });
 
-            // Beim Laden der Seite überprüfen, ob eine ausgewählte Berufsgruppe im Local Storage vorhanden ist
+            // Überprüfen, ob eine ausgewählte Berufsgruppe im Local Storage vorhanden ist
             var selectedBeruf = localStorage.getItem("selectedBeruf");
             if (selectedBeruf) {
                 dropdown.val(selectedBeruf);
@@ -18,18 +19,46 @@ $(document).ready(function() {
         }
     });
 
-
+    // Event-Handler für die Auswahl der Berufsgruppe
     $("#auswahlBerufsgruppe").change(function() {
         var selectedOption = $(this).val();
         $.ajax({
-            url: "https://gibm.becknet.ch/warenhaus/getFiliale.php?filiale=" + selectedOption + "&format=JSON",
+            url: "http://sandbox.gibm.ch/klassen.php?beruf_id=" + selectedOption + "&format=JSON",
             dataType: "json",
-            success: function(openingHoursData) {
+            success: function(data) {
+                var dropdown = $("#auswahlKlasse");
+                dropdown.empty(); // Vorherige Optionen löschen
+
+                $.each(data, function(index, klasse) {
+                    var optionText = klasse.klasse_longname;
+                    dropdown.append($('<option></option>').attr('value', klasse.klasse_id).text(optionText));
+                });
+
+                // Überprüfen, ob eine ausgewählte Klasse im Local Storage vorhanden ist
+                var selectedKlasse = localStorage.getItem("selectedKlasse");
+                if (selectedKlasse) {
+                    dropdown.val(selectedKlasse);
+                    dropdown.trigger("change");
+                }
+            }
+        });
+    });
+
+    // Event-Handler für die Auswahl der Klasse
+    $("#auswahlKlasse").change(function() {
+        var selectedOption = $(this).val();
+        $.ajax({
+            url: "https://gibm.becknet.ch/warenhaus/getFiliale.php?klasse=" + selectedOption + "&format=JSON",
+            dataType: "json",
+            success: function(stundenplanData) {
                 var stundenplanAnzeige = $("#stundenplanAnzeige");
-                stundenplanAnzeige.empty(); 
+                stundenplanAnzeige.empty(); // Vorherige Daten löschen
+
                 var table = $("<table class='table'></table>");
                 var thead = $("<thead></thead>").appendTo(table);
                 var tbody = $("<tbody></tbody>").appendTo(table);
+
+                // Überschriften für die Tabelle
                 var headerRow = $("<tr></tr>").appendTo(thead);
                 headerRow.append("<th>Datum</th>");
                 headerRow.append("<th>Wochentag</th>");
@@ -38,17 +67,33 @@ $(document).ready(function() {
                 headerRow.append("<th>Lehrer</th>");
                 headerRow.append("<th>Fach</th>");
                 headerRow.append("<th>Raum</th>");
-                $.each(openingHoursData, function(index, entry) {
+
+                // Stundenplan-Daten in die Tabelle einfügen
+                $.each(stundenplanData, function(index, entry) {
                     var row = $("<tr></tr>").appendTo(tbody);
-                    row.append("<td>" + entry.stadt + "</td>");
-                    row.append("<td>" + entry.strasse + "</td>");
-                    row.append("<td>" + entry.stundenplan + "</td>");
+                    row.append("<td>" + entry.datum + "</td>");
+                    row.append("<td>" + entry.wochentag + "</td>");
+                    row.append("<td>" + entry.von + "</td>");
+                    row.append("<td>" + entry.bis + "</td>");
+                    row.append("<td>" + entry.lehrer + "</td>");
+                    row.append("<td>" + entry.fach + "</td>");
+                    row.append("<td>" + entry.raum + "</td>");
                 });
+
                 table.appendTo(stundenplanAnzeige);
 
-                // Speichern der ausgewählten Filiale im Local Storage
-                localStorage.setItem("selectedFiliale", selectedOption);
+                // Speichern der ausgewählten Klasse im Local Storage
+                localStorage.setItem("selectedKlasse", selectedOption);
             }
         });
+    });
+
+    // Löschen des Local Storage bei Klick auf den Button
+    $("#loeschenButton").click(function() {
+        localStorage.removeItem("selectedKlasse");
+        localStorage.removeItem("selectedBeruf");
+        $("#auswahlKlasse").val('');
+        $("#auswahlBerufsgruppe").val('');
+        $("#stundenplanAnzeige").empty();
     });
 });
