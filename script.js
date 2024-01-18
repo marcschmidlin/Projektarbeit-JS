@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd', // Datumsformat
+        weekStart: 1, // Die Woche beginnt am Montag
+        calendarWeeks: true, // Zeige die Kalenderwochen
+    });
     // initiales Laden der Berufsgruppen
     $.ajax({
         url: "http://sandbox.gibm.ch/berufe.php",
@@ -48,7 +53,7 @@ $(document).ready(function() {
     $("#auswahlKlasse").change(function() {
         var selectedOption = $(this).val();
         $.ajax({
-            url: "https://gibm.becknet.ch/warenhaus/getFiliale.php?klasse=" + selectedOption + "&format=JSON",
+            url: "http://sandbox.gibm.ch/tafel.php?klasse_id=" + selectedOption + "&format=JSON",
             dataType: "json",
             success: function(stundenplanData) {
                 var stundenplanAnzeige = $("#stundenplanAnzeige");
