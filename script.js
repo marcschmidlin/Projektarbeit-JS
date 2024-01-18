@@ -3,7 +3,7 @@ $(document).ready(function() {
         url: "https://gibm.becknet.ch/warenhaus/getFiliale.php?format=JSON",
         dataType: "json",
         success: function(data) {
-            var dropdown = $("#Auswahl");
+            var dropdown = $("#auswahlBerufsgruppe");
             $.each(data, function(index, filiale) {
                 var optionText = filiale.stadt + " - " + filiale.strasse;
                 dropdown.append($('<option></option>').attr('value', filiale.id).text(optionText));
@@ -18,28 +18,32 @@ $(document).ready(function() {
         }
     });
 
-    $("#Auswahl").change(function() {
+    $("#auswahlBerufsgruppe").change(function() {
         var selectedOption = $(this).val();
         $.ajax({
             url: "https://gibm.becknet.ch/warenhaus/getFiliale.php?filiale=" + selectedOption + "&format=JSON",
             dataType: "json",
             success: function(openingHoursData) {
-                var oeffnungszeitenAnzeige = $("#oeffnungszeitenAnzeige");
-                oeffnungszeitenAnzeige.empty(); 
+                var stundenplanAnzeige = $("#stundenplanAnzeige");
+                stundenplanAnzeige.empty(); 
                 var table = $("<table class='table'></table>");
                 var thead = $("<thead></thead>").appendTo(table);
                 var tbody = $("<tbody></tbody>").appendTo(table);
                 var headerRow = $("<tr></tr>").appendTo(thead);
-                headerRow.append("<th>Stadt</th>");
-                headerRow.append("<th>Straße</th>");
-                headerRow.append("<th>Öffnungszeiten</th>");
+                headerRow.append("<th>Datum</th>");
+                headerRow.append("<th>Wochentag</th>");
+                headerRow.append("<th>Von</th>");
+                headerRow.append("<th>Bis</th>");
+                headerRow.append("<th>Lehrer</th>");
+                headerRow.append("<th>Fach</th>");
+                headerRow.append("<th>Raum</th>");
                 $.each(openingHoursData, function(index, entry) {
                     var row = $("<tr></tr>").appendTo(tbody);
                     row.append("<td>" + entry.stadt + "</td>");
                     row.append("<td>" + entry.strasse + "</td>");
-                    row.append("<td>" + entry.oeffnungszeiten + "</td>");
+                    row.append("<td>" + entry.stundenplan + "</td>");
                 });
-                table.appendTo(oeffnungszeitenAnzeige);
+                table.appendTo(stundenplanAnzeige);
 
                 // Speichern der ausgewählten Filiale im Local Storage
                 localStorage.setItem("selectedFiliale", selectedOption);
